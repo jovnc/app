@@ -37,6 +37,7 @@ def exercises_dir(
         f"Expected directory {exercises_path} to exist after setup"
     )
 
-    yield exercises_path
-
-    rmtree(work_dir)
+    try:
+        yield exercises_path
+    finally:
+        rmtree(work_dir)  # ensure cleanup even if tests fail
