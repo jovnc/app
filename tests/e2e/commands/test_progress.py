@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from ..constants import EXERCISE_NAME
 from ..runner import BinaryRunner
 
 
@@ -28,6 +29,8 @@ def test_progress_sync_on_then_off(runner: BinaryRunner, exercises_dir: Path) ->
 
 
 def test_progress_reset(runner: BinaryRunner, exercises_dir: Path) -> None:
-    """Test that progress reset works correctly."""
-    # TODO: Implement this test
-    pass
+    """Test that progress reset works correctly after verify has run."""
+    exercise_dir = exercises_dir / EXERCISE_NAME
+    res = runner.run(["progress", "reset"], cwd=exercise_dir)
+    # TODO: verify that the progress has actually been reset
+    res.assert_success()
