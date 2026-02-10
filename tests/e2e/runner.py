@@ -51,6 +51,7 @@ class BinaryRunner:
         if env:
             run_env.update(env)
 
+        # Disable color output and set encoding to utf-8 for consistent output across OS
         run_env.setdefault("NO_COLOR", "1")
         run_env.setdefault("PYTHONIOENCODING", "utf-8")
 
@@ -63,6 +64,7 @@ class BinaryRunner:
             timeout=timeout if timeout > 0 else None,
             input=stdin_text,
         )
+
         return RunResult(
             stdout=proc.stdout,
             stderr=proc.stderr,

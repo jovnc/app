@@ -5,7 +5,7 @@ import re
 
 @dataclass(frozen=True)
 class RunResult:
-    """Immutable result from a binary execution."""
+    """Represents the result of running a command-line process."""
 
     stdout: str
     stderr: str
