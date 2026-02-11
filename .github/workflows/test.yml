@@ -37,11 +37,11 @@ jobs:
 
       - name: Set binary path (Unix)
         if: runner.os != 'Windows'
-        run: echo "GITMASTERY_BINARY=./dist/gitmastery" >> $GITHUB_ENV
+        run: echo "GITMASTERY_BINARY=${{ github.workspace }}/dist/gitmastery" >> $GITHUB_ENV
 
       - name: Set binary path (Windows)
         if: runner.os == 'Windows'
-        run: echo "GITMASTERY_BINARY=./dist/gitmastery.exe" >> $env:GITHUB_ENV
+        run: echo "GITMASTERY_BINARY=${{ github.workspace }}/dist/gitmastery.exe" >> $env:GITHUB_ENV
 
       - name: Run E2E tests
         run: |
