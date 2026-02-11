@@ -43,6 +43,13 @@ jobs:
         if: runner.os == 'Windows'
         run: echo "GITMASTERY_BINARY=${{ github.workspace }}/dist/gitmastery.exe" >> $env:GITHUB_ENV
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Run E2E tests
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           python -m pytest tests/e2e/ -v
