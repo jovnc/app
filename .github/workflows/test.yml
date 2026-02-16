@@ -1,14 +1,21 @@
 name: Test
 
 on:
-  pull_request:
+  pull_request_target:
+  workflow_dispatch:
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: read
+  secrets: read
+
 jobs:
   test-e2e:
     name: E2E Tests (${{ matrix.os }})
+    environment: e2e-test
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -18,7 +25,15 @@ jobs:
         python-version: ["3.13"]
 
     steps:
-      - name: Checkout code
+      - name: Checkout on pull_request_target
+        if: github.event_name == 'pull_request_target'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Checkout on push to main and workflow_dispatch
+        if: github.event_name != 'pull_request_target'
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
