@@ -21,18 +21,20 @@ jobs:
         python-version: ["3.13"]
 
     steps:
-      - name: Set GH_TOKEN
+      # Ubuntu uses a separate PAT to avoid race conditions when multiple runners hit GitHub simultaneously
+      - name: Set GH_TOKEN (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
         shell: bash
         env:
-          GH_PAT: >-
-            ${{
-                matrix.os == 'ubuntu-latest' &&
-                secrets.GH_PAT_UBUNTU ||
-                (matrix.os != 'ubuntu-latest' && secrets.GH_PAT) ||
-                ''
-              }}
-        run: |
-          echo "GH_TOKEN=$GH_PAT" >> $GITHUB_ENV
+          GH_PAT: ${{ secrets.GH_PAT_UBUNTU }}
+        run: echo "GH_TOKEN=$GH_PAT" >> $GITHUB_ENV
+
+      - name: Set GH_TOKEN (non-Ubuntu)
+        if: matrix.os != 'ubuntu-latest'
+        shell: bash
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: echo "GH_TOKEN=$GH_PAT" >> $GITHUB_ENV
 
       - name: Validate GH_TOKEN
         shell: bash
