@@ -89,6 +89,8 @@ Shell commands are also supported.
         args = parts[1:]
 
         if command_name.lower() == "gitmastery":
+            if not args:
+                return
             gitmastery_command = args[0]
             if gitmastery_command in ("exit", "quit"):
                 return self.do_exit("")  # type: ignore[return-value]
