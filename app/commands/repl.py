@@ -89,9 +89,11 @@ Shell commands are also supported.
         args = parts[1:]
 
         if command_name.lower() == "gitmastery":
+            if not args:
+                return
             gitmastery_command = args[0]
             if gitmastery_command in ("exit", "quit"):
-                return self.do_exit("")
+                return self.do_exit("")  # type: ignore[return-value]
             elif gitmastery_command == "help":
                 self.do_help("")
             elif gitmastery_command in GITMASTERY_COMMANDS:
@@ -179,7 +181,7 @@ Shell commands are also supported.
         """Exit the Git-Mastery REPL."""
         return self.do_exit(args)
 
-    def do_help(self, args: str) -> bool:
+    def do_help(self, arg: str) -> bool:
         """Show help for commands."""
         click.echo(
             click.style("\nGit-Mastery Commands:", bold=True, fg=ClickColor.BRIGHT_CYAN)
