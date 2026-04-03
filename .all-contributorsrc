@@ -1,4 +1,71 @@
 {
   "projectName": "App",
-  "projectOwner": "Git-Mastery"
+  "projectOwner": "Git-Mastery",
+  "repoType": "github",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "damithc",
+      "name": "Damith C. Rajapakse",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1673303?v=4",
+      "profile": "http://www.comp.nus.edu.sg/~damithch",
+      "contributions": ["mentoring"]
+    },
+    {
+      "login": "woojiahao",
+      "name": "Jiahao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29497029?v=4",
+      "profile": "https://blog.woojiahao.com/",
+      "contributions": ["code", "doc"]
+    },
+    {
+      "login": "jovnc",
+      "name": "jovnc",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95868357?v=4",
+      "profile": "https://github.com/jovnc",
+      "contributions": ["code", "doc"]
+    },
+    {
+      "login": "jiaxinnns",
+      "name": "jia xin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/122351681?v=4",
+      "profile": "https://loh-jia-xin.vercel.app/",
+      "contributions": ["code", "doc"]
+    },
+    {
+      "login": "VikramGoyal23",
+      "name": "Vikram Goyal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/105161079?v=4",
+      "profile": "https://github.com/VikramGoyal23",
+      "contributions": ["code"]
+    },
+    {
+      "login": "desmondwong1215",
+      "name": "Desmond Wong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/134215008?v=4",
+      "profile": "https://github.com/desmondwong1215",
+      "contributions": ["code"]
+    },
+    {
+      "login": "SAN-MUYUN",
+      "name": "SAN MUYUN",
+      "avatar_url": "https://avatars.githubusercontent.com/u/156393005?v=4",
+      "profile": "https://github.com/SAN-MUYUN",
+      "contributions": ["code"]
+    },
+    {
+      "login": "TheMythologist",
+      "name": "TheMythologist",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29896527?v=4",
+      "profile": "https://github.com/TheMythologist",
+      "contributions": ["code"]
+    },
+    {
+      "login": "seah-minlong",
+      "name": "Minlong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86313670?v=4",
+      "profile": "https://github.com/seah-minlong",
+      "contributions": ["code"]
+    }
+  ]
 }
