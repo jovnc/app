@@ -31,6 +31,7 @@ from app.utils.github_cli import (
 )
 
 NUM_RETRIES = 3
+CLONE_RETRY_INITIAL_SLEEP = 3
 
 
 @click.command()
@@ -70,15 +71,18 @@ def on() -> None:
             local_progress = json.load(file)
     rmtree(PROGRESS_LOCAL_FOLDER_NAME)
 
-    # GitHub fork creation is async, retry clone until succeed
+    # GitHub fork creation is async; retry clone until it succeeds
     cloned = False
     for attempt in range(NUM_RETRIES):
         if attempt > 0:
-            info("Clone failed, retrying...")
+            sleep_duration = CLONE_RETRY_INITIAL_SLEEP * (2 ** (attempt - 1))
+            info(
+                f"Clone failed, retrying (attempt {attempt + 1}/{NUM_RETRIES}) in {sleep_duration}s..."
+            )
             rmtree(PROGRESS_LOCAL_FOLDER_NAME)
-            time.sleep(6)
+            time.sleep(sleep_duration)
         clone_with_custom_name(f"{username}/{fork_name}", PROGRESS_LOCAL_FOLDER_NAME)
-        if os.path.exists(PROGRESS_LOCAL_FOLDER_NAME):
+        if os.path.exists(os.path.join(PROGRESS_LOCAL_FOLDER_NAME, ".git")):
             cloned = True
             break
 
