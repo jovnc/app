@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 import click
 
@@ -28,6 +29,8 @@ from app.utils.github_cli import (
     has_fork,
     pull_request,
 )
+
+NUM_RETRIES = 3
 
 
 @click.command()
@@ -67,10 +70,19 @@ def on() -> None:
             local_progress = json.load(file)
     rmtree(PROGRESS_LOCAL_FOLDER_NAME)
 
-    clone_with_custom_name(f"{username}/{fork_name}", PROGRESS_LOCAL_FOLDER_NAME)
+    # GitHub fork creation is async, retry clone until succeed
+    cloned = False
+    for attempt in range(NUM_RETRIES):
+        if attempt > 0:
+            info("Clone failed, retrying...")
+            rmtree(PROGRESS_LOCAL_FOLDER_NAME)
+            time.sleep(6)
+        clone_with_custom_name(f"{username}/{fork_name}", PROGRESS_LOCAL_FOLDER_NAME)
+        if os.path.exists(PROGRESS_LOCAL_FOLDER_NAME):
+            cloned = True
+            break
 
-    # Verify clone succeeded, else restore local progress before failing
-    if not os.path.exists(PROGRESS_LOCAL_FOLDER_NAME):
+    if not cloned:
         os.makedirs(os.path.dirname(local_progress_filepath), exist_ok=True)
         with open(local_progress_filepath, "w") as file:
             file.write(json.dumps(local_progress, indent=2))
