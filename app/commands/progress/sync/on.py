@@ -64,12 +64,12 @@ def on() -> None:
     # To avoid sync issues, we save the local progress and delete the local repository
     # before cloning again. This should automatically setup the origin and upstream
     # remotes as well
+    progress_dir = config.metadata_dir / PROGRESS_LOCAL_FOLDER_NAME
     local_progress = []
-    local_progress_filepath = os.path.join(PROGRESS_LOCAL_FOLDER_NAME, "progress.json")
+    local_progress_filepath = progress_dir / "progress.json"
     if os.path.isfile(local_progress_filepath):
         with open(local_progress_filepath, "r") as file:
             local_progress = json.load(file)
-    rmtree(PROGRESS_LOCAL_FOLDER_NAME)
 
     # GitHub fork creation is async; retry clone until it succeeds
     cloned = False
@@ -79,10 +79,10 @@ def on() -> None:
             info(
                 f"Clone failed, retrying (attempt {attempt + 1}/{NUM_RETRIES}) in {sleep_duration}s..."
             )
-            rmtree(PROGRESS_LOCAL_FOLDER_NAME)
+            rmtree(progress_dir)
             time.sleep(sleep_duration)
-        clone_with_custom_name(f"{username}/{fork_name}", PROGRESS_LOCAL_FOLDER_NAME)
-        if os.path.exists(os.path.join(PROGRESS_LOCAL_FOLDER_NAME, ".git")):
+        clone_with_custom_name(f"{username}/{fork_name}", str(progress_dir))
+        if os.path.exists(os.path.join(progress_dir, ".git")):
             cloned = True
             break
 
@@ -91,8 +91,8 @@ def on() -> None:
         with open(local_progress_filepath, "w") as file:
             file.write(json.dumps(local_progress, indent=2))
         raise RuntimeError(
-            f"Clone failed for {PROGRESS_LOCAL_FOLDER_NAME}. "
-            "Your local progress has been restored."
+            f"Clone failed for {progress_dir}. "
+            "Your local progress has been restored. "
             "Re-run the command `gitmastery progress sync on` to try again."
         )
 
@@ -124,7 +124,7 @@ def on() -> None:
     # push the changes
     had_update = len(seen) > len(remote_progress)
     if had_update:
-        os.chdir(PROGRESS_LOCAL_FOLDER_NAME)
+        os.chdir(progress_dir)
         add_all()
         commit("Sync progress with local machine")
         push("origin", "main")
